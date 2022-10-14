@@ -1,4 +1,4 @@
-# FE
+## FE
 
 ### CSS
 - [Grid](https://velog.io/@sanbondeveloper/CSS-Grid-%EB%A0%88%EC%9D%B4%EC%95%84%EC%9B%83-%EC%A0%95%EB%A6%AC)
@@ -22,9 +22,9 @@
 
 <br/>
 
-# CS
+## CS
 
-## WEB
+### WEB
 - [브라우저 동작 원리](https://velog.io/@sanbondeveloper/%EB%B8%8C%EB%9D%BC%EC%9A%B0%EC%A0%80-%EB%8F%99%EC%9E%91-%EC%9B%90%EB%A6%AC)
 
 ### 컴퓨터 구조
