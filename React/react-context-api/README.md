@@ -1,4 +1,4 @@
-## Context API
+##🔎 Context API
 
 - React 프로젝트에서 전역적으로 사용할 데이터가 있을 때 유용한 기능
 
@@ -10,7 +10,7 @@
 
 - `Provider` 하위에서 context를 구독하는 모든 컴포넌트는 `value` prop이 변경될 때마다 다시 렌더링된다. (성능 저하)
 
-### createContext
+### ✨createContext
 
 - **Context 생성**
 
@@ -24,7 +24,7 @@ const ColorContext = createContext({ color: 'black' });
 export default ColorContext;
 ```
 
-### Consumer
+### ✨Consumer
 
 - **전역 데이터 가져오기**
 
@@ -46,7 +46,7 @@ import ColorContext from '../contexts/color';
 </ColorContext.Consumer>;
 ```
 
-### Provider
+### ✨Provider
 
 - 전역 데이터 값을 변경할 수 있다.
 
@@ -64,7 +64,7 @@ import ColorContext from './contexts/color';
 </ColorContext.Provider>;
 ```
 
-### 동적 Context
+### ✨동적 Context
 
 - **함수**를 전역 데이터로 전달할 수도 있다.
 
@@ -104,7 +104,7 @@ export { ColorProvider, ColorConsumer };
 export default ColorContext;
 ```
 
-### useContext Hook 사용
+### ✨useContext Hook 사용
 
 - React에서 기본적으로 제공해주는 Hook
 
@@ -146,7 +146,7 @@ export default function SelectColor() {
 }
 ```
 
-### useReducer 사용
+### ✨useReducer 사용
 
 - `useState` 대신 `useReducer` 사용해보기
 
