@@ -33,7 +33,7 @@
 - [브라우저 동작 원리](https://velog.io/@sanbondeveloper/%EB%B8%8C%EB%9D%BC%EC%9A%B0%EC%A0%80-%EB%8F%99%EC%9E%91-%EC%9B%90%EB%A6%AC)
 
 ### Computer Structure
-- [컴퓨터 구조 요점 정리](https://velog.io/@sanbondeveloper/CS-%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0-%EC%A0%95%EB%A6%AC)
+- [컴퓨터 구조 핵심 정리](https://velog.io/@sanbondeveloper/CS-%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0-%EC%A0%95%EB%A6%AC)
 
 ### OS
 - [운영체제란](https://velog.io/@sanbondeveloper/OS-%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C%EB%9E%80)
