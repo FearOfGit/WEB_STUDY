@@ -1,4 +1,4 @@
-##🔎 Context API
+## 🔎Context API
 
 - React 프로젝트에서 전역적으로 사용할 데이터가 있을 때 유용한 기능
 
