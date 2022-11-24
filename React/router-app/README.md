@@ -2,8 +2,8 @@
 
 - 리액트 라우터는 다음 페이지에 대한 데이터가 로드되는 동안 이전 페이지를 그대로 유지한다.
 - 사용자에게 데이터가 로드되는 중이라는 피드백(스피너, 로딩바 등)을 주자
-- useNavigation Hook
-- navigation.state : 현재 navigation state를 반환(idle | submitting | loading)
+- `useNavigation` Hook
+- `navigation.state` : 현재 navigation state를 반환(idle | submitting | loading)
 - 추가적으로 이미 방문한 아이템에 대해서는 캐싱해놓는 것이 좋다.
 
 ```jsx
@@ -360,4 +360,169 @@ export default function Root() {
     </>
   );
 }
+```
+
+## Mutations Without Navigation
+
+- 페이지 변경 없이 데이터 변경하기
+- `useFetcher` 사용
+- causing a navigation 없이 로더 및 액션과 커뮤니케이트할 수 있다.
+- submit button이 필요없는 건가
+- 모든 데이터 재검증, 오류 포착 등 기존 `<Form>`과 거의 동일하게 동작한다.
+- 다만, navigation이 아니라 URL이 변경되지 않고 history 스택에 영향을 주지 않는다.
+
+```jsx
+import { useFetcher } from 'react-router-dom';
+
+export async function action({ request, params }) {
+  let formData = await request.formData();
+  return updateContact(params.contactId, {
+    favorite: formData.get('favorite') === 'true',
+  });
+}
+
+function Favorite({ contact }) {
+  const fetcher = useFetcher();
+  //...
+
+  return <fetcher.Form method="post">//...</fetcher.Form>;
+}
+
+// main.tsx
+import Contact, {
+  //...
+  action as contactAction,
+} from './routes/contact';
+
+const router = createBrowserRouter([
+  {
+    //...
+    children: [
+      { index: true, element: <Index /> },
+      {
+        //...
+        action: contactAction,
+      },
+      //...
+    ],
+  },
+]);
+```
+
+## Optimistic UI
+
+- `fetcher.state`(`navigation.state` 비슷한) 방식을 사용할 수도 있지만
+- 데이터가 로드중일 때 사용할 수 있는 또 다른 전략인 Optimistic UI 사용
+- fetcher는 action에 제출되는 form 데이터를 알고 있어 `fetcher.formData`를 사용할 수 있다. (`navigation.formData`도 있다.)
+- 따라서, 네트워크가 완료되지 않아도 이를 사용하여 데이터의 상태를 즉시 업데이트할 수 있다.
+- 업데이트가 실패하면 UI는 실제 데이터로 되돌아간다.
+- 네트워크 작업이 완료되면 `fetcher.formData` 더 이상 존재하지 않는다.
+
+```jsx
+function Favorite({ contact }) {
+  const fetcher = useFetcher();
+
+  let favorite = contact.favorite;
+  if (fetcher.formData) {
+    favorite = fetcher.formData.get('favorite') === 'true';
+  }
+
+  //...
+}
+```
+
+## Not Found Data
+
+- Not Found 오류 처리하기
+
+```jsx
+export async function loader({ params }) {
+  const contact = await getContact(params.contactId);
+  if (!contact) {
+    throw new Response('', {
+      status: 404,
+      statusText: 'Not Found',
+    });
+  }
+  return contact;
+}
+```
+
+## Pathless Routes
+
+- 오류 페이지 자식 페이지에 출력하기
+- 모든 자식 오류에 error 요소를 추가하는 것은 비효율적이다.
+- path 없이 라우트를 사용하기
+- children 속성을 중첩으로 사용한다.
+
+```jsx
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Root />,
+    errorElement: <ErrorPage />,
+    loader: rootLoader,
+    action: rootAction,
+    children: [
+      {
+        errorElement: <ErrorPage />,
+        children: [
+          { index: true, element: <Index /> },
+          {
+            path: 'contacts/:contactId',
+            element: <Contact />,
+            loader: contactLoader,
+            action: contactAction,
+          },
+          {
+            path: 'contacts/:contactId/edit',
+            element: <EditContact />,
+            loader: contactLoader,
+            action: editAction,
+          },
+          {
+            path: 'contacts/:contactId/destroy',
+            action: destroyAction,
+            errorElement: <div>Oops! There was an error.</div>,
+          },
+        ],
+      },
+    ],
+  },
+]);
+```
+
+## JSX Routes
+
+- 라우터를 설정하는 JSX 방식의 스타일
+
+```jsx
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route
+      path="/"
+      element={<Root />}
+      loader={rootLoader}
+      action={rootAction}
+      errorElement={<ErrorPage />}
+    >
+      <Route errorElement={<ErrorPage />}>
+        <Route index element={<Index />} />
+        <Route
+          path="contacts/:contactId"
+          element={<Contact />}
+          loader={contactLoader}
+          action={contactAction}
+        />
+        <Route
+          path="contacts/:contactId/edit"
+          element={<EditContact />}
+          loader={contactLoader}
+          action={editAction}
+        />
+        <Route path="contacts/:contactId/destroy" action={destroyAction} />
+      </Route>
+    </Route>
+  )
+);
 ```
