@@ -1,3 +1,13 @@
+# react-router v6 tutorial
+
+## Active Link Styling
+
+- `<NavLink>` 컴포넌트
+
+```jsx
+import { NavLink } from 'react-router-dom';
+```
+
 ## Global Pending UI
 
 - 리액트 라우터는 다음 페이지에 대한 데이터가 로드되는 동안 이전 페이지를 그대로 유지한다.
